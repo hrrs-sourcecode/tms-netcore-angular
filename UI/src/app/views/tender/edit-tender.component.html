@@ -44,7 +44,7 @@
                 <div class="mb-3 cards-row">
                     <label for="closingDate">Closing Date</label>
                     <input id="closingDate" formControlName="closingDate" type="text" 
-                    bsDatepicker [bsConfig]="datePickerConfigClosingDate" class="form-control" 
+                    bsDatepicker [bsConfig]="datePickerConfigClosingDate" class="form-control" (blur)="updateClosingDate()"
                     [ngClass]="{ 'is-invalid' : tenderForm.get('closingDate')?.errors?.['required'] && tenderForm.get('closingDate')?.touched }"/>
                     <div class="invalid-feedback">Please fill out this field.</div>
                 </div>

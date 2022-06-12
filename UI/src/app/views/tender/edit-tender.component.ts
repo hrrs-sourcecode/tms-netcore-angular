@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -27,6 +28,7 @@ export class EditTenderComponent implements OnInit {
 
   tenderForm!: FormGroup;
   tender!:Tender;
+  countTouch = 0;
 
   ngOnInit(): void {
 
@@ -90,23 +92,23 @@ export class EditTenderComponent implements OnInit {
     this.tenderForm.controls['releaseDate'].setValue(new Date(this.tender.releaseDate));
     this.tenderForm.controls['closingDate'].setValue(new Date(this.tender.closingDate));
     this.tenderForm.controls['createdBy'].setValue(this.tender.createdBy);
-    this.tenderForm.controls['createdDate'].setValue(this.tender.createdDate);
+    this.tenderForm.controls['createdDate'].setValue(formatDate(this.tender.createdDate!, 'dd-MM-yyyy hh:mm:ss a', 'en-US'));
     this.tenderForm.controls['modifiedBy'].setValue(this.tender.modifiedBy);
-    this.tenderForm.controls['modifiedDate'].setValue(this.tender.modifiedDate);
+    this.tenderForm.controls['modifiedDate'].setValue(formatDate(this.tender.modifiedDate!, 'dd-MM-yyyy hh:mm:ss a', 'en-US'));
   }
 
   setDefaultValues(): void {
     this.datePickerConfigReleaseDate = Object.assign({}, {
       containerClass: 'theme-dark-blue',
       minDate: new Date (new Date().setDate(new Date().getDate() + 1)),
-      dateInputFormat: 'DD/MM/YYYY',
+      dateInputFormat: 'DD-MMM-YYYY',
       showWeekNumbers:false
     });
 
     this.datePickerConfigClosingDate = Object.assign({}, {
       containerClass: 'theme-dark-blue',
       minDate: new Date (new Date().setDate(new Date().getDate() + 2)),
-      dateInputFormat: 'DD/MM/YYYY',
+      dateInputFormat: 'DD-MMM-YYYY',
       showWeekNumbers:false
     });
   }
@@ -116,7 +118,7 @@ export class EditTenderComponent implements OnInit {
       this.datePickerConfigClosingDate = Object.assign({}, {
         containerClass: 'theme-dark-blue',
         minDate: new Date (x.setDate(x.getDate() + 1)),
-        dateInputFormat: 'DD/MM/YYYY',
+        dateInputFormat: 'DD-MMM-YYYY',
         showWeekNumbers:false
       });
       if (x <= new Date()) {
@@ -128,6 +130,15 @@ export class EditTenderComponent implements OnInit {
       } 
     });
   }
+
+  updateClosingDate(){
+    let dateRelease : Date =  this.tenderForm.get('releaseDate')?.value;
+    let dateClosing : Date = this.tenderForm.get('closingDate')?.value;
+    if (dateClosing <= dateRelease) {
+      //this.tenderForm.controls['closingDate'].setValue(new Date(dateRelease.setDate(dateRelease.getDate() + 1)));    
+      this.tenderForm.controls['closingDate'].setValue(new Date(dateRelease));   
+    }
+  } 
 
   onSubmit()
   {

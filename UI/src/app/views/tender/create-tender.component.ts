@@ -58,14 +58,14 @@ export class CreateTenderComponent implements OnInit {
     this.datePickerConfigReleaseDate = Object.assign({}, {
       containerClass: 'theme-dark-blue',
       minDate: new Date (new Date().setDate(new Date().getDate() + 1)),
-      dateInputFormat: 'DD/MM/YYYY',
+      dateInputFormat: 'DD-MMM-YYYY',
       showWeekNumbers:false
     });
 
     this.datePickerConfigClosingDate = Object.assign({}, {
       containerClass: 'theme-dark-blue',
       minDate: new Date (new Date().setDate(new Date().getDate() + 2)),
-      dateInputFormat: 'DD/MM/YYYY',
+      dateInputFormat: 'DD-MMM-YYYY',
       showWeekNumbers:false
     });
   }
@@ -81,7 +81,7 @@ export class CreateTenderComponent implements OnInit {
       this.datePickerConfigClosingDate = Object.assign({}, {
         containerClass: 'theme-dark-blue',
         minDate: new Date (x.setDate(x.getDate() + 1)),
-        dateInputFormat: 'DD/MM/YYYY',
+        dateInputFormat: 'DD-MMM-YYYY',
         showWeekNumbers:false
       });
       if (x <= new Date()) {
@@ -93,6 +93,16 @@ export class CreateTenderComponent implements OnInit {
       } 
     })
   }
+
+  updateClosingDate(){
+    console.log('kencur');
+    let dateRelease : Date =  this.tenderForm.get('releaseDate')?.value;
+    let dateClosing : Date = this.tenderForm.get('closingDate')?.value;
+    if (dateClosing <= dateRelease) {
+      //this.tenderForm.controls['closingDate'].setValue(new Date(dateRelease.setDate(dateRelease.getDate() + 1)));    
+      this.tenderForm.controls['closingDate'].setValue(new Date(dateRelease));   
+    }
+  } 
 
   assignFormControl(fg:FormGroup):void{
     Object.keys(fg.controls).forEach((key:string) =>

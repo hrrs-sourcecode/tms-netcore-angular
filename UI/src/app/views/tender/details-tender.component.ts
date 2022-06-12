@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -84,23 +85,23 @@ export class DetailsTenderComponent implements OnInit {
     this.tenderForm.controls['releaseDate'].setValue(new Date(this.tender.releaseDate));
     this.tenderForm.controls['closingDate'].setValue(new Date(this.tender.closingDate));
     this.tenderForm.controls['createdBy'].setValue(this.tender.createdBy);
-    this.tenderForm.controls['createdDate'].setValue(this.tender.createdDate);
+    this.tenderForm.controls['createdDate'].setValue(formatDate(this.tender.createdDate!, 'dd-MM-yyyy hh:mm:ss a', 'en-US'));
     this.tenderForm.controls['modifiedBy'].setValue(this.tender.modifiedBy);
-    this.tenderForm.controls['modifiedDate'].setValue(this.tender.modifiedDate);
+    this.tenderForm.controls['modifiedDate'].setValue(formatDate(this.tender.modifiedDate!, 'dd-MM-yyyy hh:mm:ss a', 'en-US'));
   }
 
   setDefaultValues(): void {
     this.datePickerConfigReleaseDate = Object.assign({}, {
       containerClass: 'theme-dark-blue',
       minDate: new Date (new Date().setDate(new Date().getDate() + 1)),
-      dateInputFormat: 'DD/MM/YYYY',
+      dateInputFormat: 'DD-MMM-YYYY',
       showWeekNumbers:false
     });
 
     this.datePickerConfigClosingDate = Object.assign({}, {
       containerClass: 'theme-dark-blue',
       minDate: new Date (new Date().setDate(new Date().getDate() + 2)),
-      dateInputFormat: 'DD/MM/YYYY',
+      dateInputFormat: 'DD-MMM-YYYY',
       showWeekNumbers:false
     });
   }
