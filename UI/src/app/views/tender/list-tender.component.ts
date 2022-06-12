@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { delayWhen, retryWhen, scan } from 'rxjs';
 import { Tender } from 'src/app/models/tender.model';
 import { TenderService } from 'src/app/services/tender.service';
 
@@ -12,6 +13,8 @@ export class ListTenderComponent implements OnInit {
 
   errorMessage: string = "Loading data, please wait...";
   tenderList!: Tender[];
+  retryCounts: number = 0;
+  retryLimits: number = 100000;
 
   constructor(private _tenderService : TenderService, private _router: Router) { }
 
@@ -25,17 +28,13 @@ export class ListTenderComponent implements OnInit {
   }
 
   getTenderList():void{
-    this._tenderService.getTenderList().subscribe(
+    console.log(localStorage.getItem('userClaims'));
+    this._tenderService.getTenderList()
+    .subscribe(    
       x => { this.tenderList = <Tender[]> x.data }, 
       error => { 
         console.log(error);
         this.errorMessage = 'Cannot connect to the server, please try again later'; 
-        if (error.status = 401)
-        {
-          alert('Your login has been expired');
-          localStorage.removeItem('userClaims');
-        }
-        this._router.navigate(['/home']); 
       });
   }
 
