@@ -15,7 +15,7 @@ export class TenderService {
   userToken:string = '';
 
   constructor(private httpclient : HttpClient, private _router: Router, private _userService:UserService) { 
-
+    console.log(localStorage.getItem("userClaims"));
     if(localStorage.getItem("userClaims")!= null)
     {
       this._userService.loginEvent.next(true);
