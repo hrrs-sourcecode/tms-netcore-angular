@@ -58,8 +58,9 @@ export class UserLoginComponent implements OnInit {
       { 
         localStorage.setItem("userClaims", JSON.stringify(x));
         this._userService.loginEvent.next(true);
+        this._router.navigate(['/home']);
       }, 
       error => { alert(this.errorMessage); console.log(error) },
-      () => { this._router.navigate(['/tenderList']); } );;   
+      () => {  } );;   
   }
 }
