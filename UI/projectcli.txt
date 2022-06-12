@@ -1,0 +1,16 @@
+ng new TMS-UI --skip-tests true
+npm install bootstrap@5 --save
+ng g cl models/tender.model
+ng g cl models/responseBase.model
+ng g cl models/requestBase.model
+ng g cl models/userClaim.model 
+ng g cl models/userCredential.model 
+ng g c views/nav/navMenu --skip-tests --flat true
+ng g c views/tender/listTender --skip-tests -s true --flat true
+ng g c views/tender/createTender --skip-tests -s true --flat true
+ng g c views/tender/editTender --skip-tests -s true --flat true
+ng g c views/user/userLogin --skip-tests -s true --flat true
+ng g c views/home/home --skip-tests -s true --flat true
+ng g s services/tender --skip-tests true --flat true
+ng g s services/user --skip-tests true --flat true
+ng g p pipes/tenderScale --skip-tests true --flat true -d
