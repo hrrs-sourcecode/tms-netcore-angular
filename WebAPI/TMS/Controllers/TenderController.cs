@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using TMS.DTO;
 using TMS.Repositories.Interfaces;
 using TMS.Services;
 using TMS.Services.Interfaces;
@@ -29,8 +24,6 @@ namespace TMS.Controllers
             GetAllTenderListAsyncResponse response = await tenderService.GetAllTenderListAsync();
             if (response.IsSuccess)
             {
-                //return Ok((IList<Tender>)response.Data);
-                //return Ok(JsonConvert.SerializeObject(response.Data));
                 return Ok(response);
             }
             return BadRequest(response.Messages[0]);
@@ -57,9 +50,7 @@ namespace TMS.Controllers
 
             if (response.IsSuccess)
             {
-                Tender tender = JsonConvert.DeserializeObject<Tender>(request.Data.ToString());
                 return Ok(response);
-                //return CreatedAtAction(nameof(GetTenderByIdAsync), new { id = tender.Id }, tender);
             }
             return BadRequest(response.Messages[0]);
         }

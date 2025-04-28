@@ -153,7 +153,7 @@ export class EditTenderComponent implements OnInit {
       releaseDate:this.tenderForm.get('releaseDate')?.value,
       closingDate:this.tenderForm.get('closingDate')?.value,    
       createdBy:this.tenderForm.get('createdBy')?.value,
-      createdDate:this.tenderForm.get('createdDate')?.value,
+      createdDate:this.tender.createdDate,
       modifiedBy:(<UserClaim>JSON.parse(localStorage.getItem("userClaims") || '')).userName,
       modifiedDate: new Date(),
     }

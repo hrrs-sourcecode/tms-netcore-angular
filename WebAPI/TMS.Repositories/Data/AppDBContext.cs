@@ -14,5 +14,14 @@ namespace TMS.Repositories.Data
         }
 
         public DbSet<Tender> Tenders { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Tender>()
+                .Property(t => t.TenderValue)
+                .HasColumnType("decimal(18,2)");
+        }
     }
 }

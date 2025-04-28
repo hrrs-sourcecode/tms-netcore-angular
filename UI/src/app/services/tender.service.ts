@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RequestBase } from 'src/app/models/request-base.model';
 import { ResponseBase } from 'src/app/models/response-base.model';
 import { Tender } from 'src/app/models/tender.model';
@@ -7,23 +7,24 @@ import { Observable } from 'rxjs';
 import { UserClaim } from '../models/user-claim.model';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class TenderService {
+  url = environment.apiBaseUrl + '/tender/';
+  userToken = '';
 
-  url: string = 'https://localhost:44381/api/tender/';
-  userToken:string = '';
-
-  constructor(private httpclient : HttpClient, private _router: Router, private _userService:UserService) { 
-    console.log(localStorage.getItem("userClaims"));
-    if(localStorage.getItem("userClaims")!= null)
-    {
+  constructor(
+    private httpclient: HttpClient,
+    private _router: Router,
+    private _userService: UserService,
+  ) {
+    if (localStorage.getItem('userClaims') != null) {
       this._userService.loginEvent.next(true);
-      this.userToken = (<UserClaim>JSON.parse(localStorage.getItem("userClaims") || '')).token;
-    }
-    else{
+      this.userToken = (<UserClaim>JSON.parse(localStorage.getItem('userClaims') || '')).token;
+    } else {
       this._userService.loginEvent.next(false);
-      this._router.navigate(['/userLogin']); 
+      this._router.navigate(['/userLogin']);
     }
   }
 
@@ -32,39 +33,45 @@ export class TenderService {
 
   // Get all
   getTenderList(): Observable<ResponseBase> {
-    let localURL = this.url + 'getalltenderlistasync';
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.userToken);
-    return this.httpclient.post<ResponseBase>(localURL,  null, {headers});
-  }
-  
-  // Get by id 
-  getTenderById(id:number): Observable<ResponseBase> {
-    let localURL = this.url + 'gettenderbyidasync';
-    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('Authorization', 'Bearer ' + this.userToken);
-    return this.httpclient.post<ResponseBase>(localURL, id, { headers });
+    const localURL = this.url + 'getalltenderlistasync';
+    return this.executeRequest(null, localURL);
   }
 
-  // Create 
+  // Get by id
+  getTenderById(id: number): Observable<ResponseBase> {
+    const localURL = this.url + 'gettenderbyidasync';
+    return this.executeRequest(id, localURL);
+  }
+
+  // Create
   createTender(tender: Tender): Observable<ResponseBase> {
-    let localURL = this.url + 'createtenderasync';
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.userToken);
+    const localURL = this.url + 'createtenderasync';
     this.request.data = tender;
-    return this.httpclient.post<ResponseBase>(localURL, this.request, {headers});
+    return this.executeRequest(this.request, localURL);
   }
 
   // Update
   updateTender(tender: Tender): Observable<ResponseBase> {
-    let localURL = this.url + 'updatetenderasync';
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.userToken);
+    const localURL = this.url + 'updatetenderasync';
     this.request.data = tender;
-    return this.httpclient.post<ResponseBase>(localURL, this.request, {headers});
+    return this.executeRequest(this.request, localURL);
   }
 
   // Delete
   deleteTender(tender: Tender): Observable<ResponseBase> {
-    let localURL = this.url + 'deletetenderasync';
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.userToken);
+    const localURL = this.url + 'deletetenderasync';
     this.request.data = tender;
-    return this.httpclient.post<ResponseBase>(localURL, this.request, {headers});
+    return this.executeRequest(this.request, localURL);
+  }
+
+  createHttpHeaderRequest(): HttpHeaders {
+    return new HttpHeaders()
+      .set('Content-Type', 'application/json; charset=utf-8')
+      .set('Authorization', 'Bearer ' + this.userToken);
+  }
+
+  executeRequest(requestData: any, requestUrl: string): Observable<ResponseBase> {
+    const headers = this.createHttpHeaderRequest();
+    return this.httpclient.post<ResponseBase>(requestUrl, requestData, { headers });
   }
 }
