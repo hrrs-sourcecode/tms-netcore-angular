@@ -7,7 +7,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent implements OnInit {
-  isExpanded:boolean = false;
+  isExpanded = false;
 
   @Input() userClaimsIsNotNull!:boolean;
 
@@ -19,9 +19,12 @@ export class NavMenuComponent implements OnInit {
     this.isExpanded = !this.isExpanded;
   }
 
-  constructor(private _userService: UserService) { }
+  constructor(private _userService: UserService) {
+    /* do nothing */
+   }
 
   ngOnInit(): void {
+    /* do nothing */
   }
 
   logout():void {

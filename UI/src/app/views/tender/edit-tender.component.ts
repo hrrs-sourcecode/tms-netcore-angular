@@ -16,8 +16,8 @@ import { TenderService } from 'src/app/services/tender.service';
 })
 export class EditTenderComponent implements OnInit {
 
-  messageResponse: string = 'Success';
-  errorMessage: string = 'Cannot connect to the server, please try again later';
+  messageResponse = 'Success';
+  errorMessage = 'Cannot connect to the server, please try again later';
   releaseDate!: Date;
 
   datePickerConfigReleaseDate! : Partial<BsDatepickerConfig>;
@@ -57,12 +57,10 @@ export class EditTenderComponent implements OnInit {
         }
         this._router.navigate(['/home']); 
       },
-      () => {  } );
+      () => { /* do nothing */  } );
   }
 
   buildFormGroup(): void {
-    let tender:Tender;
-    let idPipe = new TenderIdPipe();
       this.tenderForm = this._fb.group(
         {
           id:[''],
@@ -82,7 +80,7 @@ export class EditTenderComponent implements OnInit {
   }
 
   setFormValues():void {
-    let idPipe = new TenderIdPipe();
+    const idPipe = new TenderIdPipe();
     this.tenderForm.controls['id'].setValue(this.tender.id);
     this.tenderForm.controls['tenderID'].setValue(idPipe.transform(this.tender.id,7));
     this.tenderForm.controls['contractNo'].setValue(this.tender.contractNo);
@@ -132,8 +130,8 @@ export class EditTenderComponent implements OnInit {
   }
 
   updateClosingDate(){
-    let dateRelease : Date =  this.tenderForm.get('releaseDate')?.value;
-    let dateClosing : Date = this.tenderForm.get('closingDate')?.value;
+    const dateRelease : Date =  this.tenderForm.get('releaseDate')?.value;
+    const dateClosing : Date = this.tenderForm.get('closingDate')?.value;
     if (dateClosing <= dateRelease) {
       //this.tenderForm.controls['closingDate'].setValue(new Date(dateRelease.setDate(dateRelease.getDate() + 1)));    
       this.tenderForm.controls['closingDate'].setValue(new Date(dateRelease));   
@@ -143,7 +141,7 @@ export class EditTenderComponent implements OnInit {
   onSubmit()
   {
     //this.assignFormControl(this.tenderForm);
-    let tender:Tender = {
+    const tender:Tender = {
       id :this.tenderForm.get('id')?.value,
       tenderID:this.tenderForm.get('tenderID')?.value,
       contractNo:this.tenderForm.get('contractNo')?.value,
@@ -159,7 +157,7 @@ export class EditTenderComponent implements OnInit {
     }
 
     this._tenderService.updateTender(tender).subscribe(
-      x => { alert(this.messageResponse); this._router.navigate(['/tenderList']) }, 
+      () => { alert(this.messageResponse); this._router.navigate(['/tenderList']) }, 
       error => { alert(this.errorMessage); console.log(error) },
       () => { alert('Redirect to the list ... ')} );
     

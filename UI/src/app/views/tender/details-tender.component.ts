@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Tender } from 'src/app/models/tender.model';
@@ -15,8 +15,8 @@ import { TenderService } from 'src/app/services/tender.service';
 })
 export class DetailsTenderComponent implements OnInit {
 
-  messageResponse: string = 'Success';
-  errorMessage: string = 'Cannot connect to the server, please try again later';
+  messageResponse = 'Success';
+  errorMessage = 'Cannot connect to the server, please try again later';
   releaseDate!: Date;
 
   datePickerConfigReleaseDate! : Partial<BsDatepickerConfig>;
@@ -50,12 +50,10 @@ export class DetailsTenderComponent implements OnInit {
         }
         this._router.navigate(['/home']); 
       },
-      () => {  } );
+      () => { /* do nothing */ } );
   }
 
   buildFormGroup(): void {
-    let tender:Tender;
-    let idPipe = new TenderIdPipe();
       this.tenderForm = this._fb.group(
         {
           id:[''],
@@ -75,7 +73,7 @@ export class DetailsTenderComponent implements OnInit {
   }
 
   setFormValues():void {
-    let idPipe = new TenderIdPipe();
+    const idPipe = new TenderIdPipe();
     this.tenderForm.controls['id'].setValue(this.tender.id);
     this.tenderForm.controls['tenderID'].setValue(idPipe.transform(this.tender.id,7));
     this.tenderForm.controls['contractNo'].setValue(this.tender.contractNo);

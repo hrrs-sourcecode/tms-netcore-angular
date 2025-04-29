@@ -70,7 +70,7 @@ export class TenderService {
       .set('Authorization', 'Bearer ' + this.userToken);
   }
 
-  executeRequest(requestData: any, requestUrl: string): Observable<ResponseBase> {
+  executeRequest(requestData: unknown, requestUrl: string): Observable<ResponseBase> {
     const headers = this.createHttpHeaderRequest();
     return this.httpclient.post<ResponseBase>(requestUrl, requestData, { headers });
   }

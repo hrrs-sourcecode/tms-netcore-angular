@@ -1,7 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserClaim } from 'src/app/models/user-claim.model';
 import { UserCredential } from 'src/app/models/user-credential.model';
 import { UserService } from 'src/app/services/user.service';
 
@@ -14,8 +13,7 @@ import { UserService } from 'src/app/services/user.service';
 export class UserLoginComponent implements OnInit {
 
   userForm!: FormGroup;
-  errorMessage: string = 'This user is not authorize';
-
+  errorMessage = 'This user is not authorize';
   
   constructor(private _fb: FormBuilder, private _userService : UserService, private _router: Router) { }
   @Output() loginEvent: EventEmitter<string> = new EventEmitter<string>();
@@ -25,11 +23,6 @@ export class UserLoginComponent implements OnInit {
 
     this.setFormValues();
   }
-
-  /*testEvent(xyz:string){
-    console.log(xyz);
-    this._userService.loginEvent.next(xyz);
-  }*/
 
   buildFormGroup(): void {
     this.userForm = this._fb.group(
@@ -47,7 +40,7 @@ export class UserLoginComponent implements OnInit {
 
   onSubmit()
   {
-    let userCredential : UserCredential = {
+    const userCredential : UserCredential = {
       userName:this.userForm.get('userName')?.value,
       password:this.userForm.get('password')?.value,
     }
@@ -61,6 +54,6 @@ export class UserLoginComponent implements OnInit {
         this._router.navigate(['/home']);
       }, 
       error => { alert(this.errorMessage); console.log(error) },
-      () => {  } );;   
+      () => { /* do nothing */ } );
   }
 }

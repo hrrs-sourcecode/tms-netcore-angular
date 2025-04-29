@@ -1,8 +1,7 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { getDate } from 'ngx-bootstrap/chronos/utils/date-getters';
-import { BsDatepickerConfig, DatepickerDateCustomClasses } from 'ngx-bootstrap/datepicker';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Tender } from 'src/app/models/tender.model';
 import { UserClaim } from 'src/app/models/user-claim.model';
 import { TenderService } from 'src/app/services/tender.service';
@@ -19,8 +18,8 @@ import { TenderService } from 'src/app/services/tender.service';
 
 export class CreateTenderComponent implements OnInit {
 
-  messageResponse: string = 'Success';
-  errorMessage: string = 'Cannot connect to the server, please try again later';
+  messageResponse = 'Success';
+  errorMessage = 'Cannot connect to the server, please try again later';
   releaseDate!: Date;
 
   datePickerConfigReleaseDate! : Partial<BsDatepickerConfig>;
@@ -71,7 +70,7 @@ export class CreateTenderComponent implements OnInit {
   }
 
   monitoringForm(): void {
-    this.tenderForm.valueChanges.subscribe(x => {
+    this.tenderForm.valueChanges.subscribe(() => {
       this.assignFormControl(this.tenderForm);
     })
   }
@@ -95,9 +94,8 @@ export class CreateTenderComponent implements OnInit {
   }
 
   updateClosingDate(){
-    console.log('kencur');
-    let dateRelease : Date =  this.tenderForm.get('releaseDate')?.value;
-    let dateClosing : Date = this.tenderForm.get('closingDate')?.value;
+    const dateRelease =  this.tenderForm.get('releaseDate')?.value;
+    const dateClosing = this.tenderForm.get('closingDate')?.value;
     if (dateClosing <= dateRelease) {
       //this.tenderForm.controls['closingDate'].setValue(new Date(dateRelease.setDate(dateRelease.getDate() + 1)));    
       this.tenderForm.controls['closingDate'].setValue(new Date(dateRelease));   
@@ -107,7 +105,7 @@ export class CreateTenderComponent implements OnInit {
   assignFormControl(fg:FormGroup):void{
     Object.keys(fg.controls).forEach((key:string) =>
     {
-      let controlObj = fg.get(key);
+      const controlObj = fg.get(key);
       if(controlObj instanceof FormGroup){
         this.assignFormControl(controlObj);
       }
@@ -120,7 +118,7 @@ export class CreateTenderComponent implements OnInit {
   onSubmit()
   {
     this.assignFormControl(this.tenderForm);
-    let tender:Tender = {
+    const tender:Tender = {
       id : 0,
       tenderID:'',
       contractNo:this.tenderForm.get('contractNo')?.value,
@@ -134,7 +132,7 @@ export class CreateTenderComponent implements OnInit {
     }
 
     this._tenderService.createTender(tender).subscribe(
-      x => { alert(this.messageResponse); this._router.navigate(['/tenderList']) }, 
+      () => { alert(this.messageResponse); this._router.navigate(['/tenderList']) }, 
       error => { alert(this.errorMessage); console.log(error) },
       () => { alert('Redirect to the list ... ')} );
   

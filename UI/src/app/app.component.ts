@@ -1,6 +1,5 @@
-import { Component, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { TenderService } from './services/tender.service';
 import { UserService } from './services/user.service';
 
 @Component({

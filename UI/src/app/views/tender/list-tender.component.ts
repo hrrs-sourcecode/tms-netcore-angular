@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { delayWhen, retryWhen, scan } from 'rxjs';
 import { Tender } from 'src/app/models/tender.model';
 import { TenderService } from 'src/app/services/tender.service';
 
@@ -11,10 +10,10 @@ import { TenderService } from 'src/app/services/tender.service';
 })
 export class ListTenderComponent implements OnInit {
 
-  errorMessage: string = "Loading data, please wait...";
+  errorMessage = "Loading data, please wait...";
   tenderList!: Tender[];
-  retryCounts: number = 0;
-  retryLimits: number = 100000;
+  retryCounts = 0;
+  retryLimits = 100000;
 
   constructor(private _tenderService : TenderService, private _router: Router) { }
 
@@ -41,7 +40,7 @@ export class ListTenderComponent implements OnInit {
   deleteTender(tender:Tender):void{
     if (confirm("Are you sure ?"))
     {
-      this._tenderService.deleteTender(tender).subscribe( x => {this.getTenderList()} , error => { this.errorMessage = error.message; console.log(error)});
+      this._tenderService.deleteTender(tender).subscribe( () => {this.getTenderList()} , error => { this.errorMessage = error.message; console.log(error)});
     }
   }
 }
